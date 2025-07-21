@@ -1,6 +1,10 @@
 const express = require('express');
+const cors = require('cors'); // REQUIRED to enable CORS
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors()); // Allow all origins
 
 app.get('/ping', (req, res) => {
   console.log('Received /ping request');

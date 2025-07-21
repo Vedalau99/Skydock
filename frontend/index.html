@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SkyDock</title>
+</head>
+<body>
+  <h1>SkyDock is live!</h1>
+  <p id="status">Loading backend...</p>
+
+  <script>
+    fetch("https://ggwsihjsfp.us-east-1.awsapprunner.com/ping")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("status").innerText = data.message;
+      })
+      .catch((err) => {
+        console.error("Fetch failed:", err);
+        document.getElementById("status").innerText = "Failed to reach backend.";
+      });
+  </script>
+</body>
+</html>

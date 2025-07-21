@@ -45,3 +45,14 @@ resource "aws_iam_role_policy_attachment" "ecr_readonly" {
   role       = aws_iam_role.apprunner_ecr_access.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
+
+resource "aws_apprunner_observability_configuration" "skydock_logs" {
+  observability_configuration_name = "skydock-observability"
+  trace_configuration {
+    vendor = "AWSXRAY"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
