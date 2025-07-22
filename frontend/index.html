@@ -7,16 +7,50 @@
   <h1>SkyDock is live!</h1>
   <p id="status">Loading backend...</p>
 
+  <!-- User Form -->
+  <form id="messageForm">
+    <input type="text" id="name" placeholder="Your name" required />
+    <input type="text" id="message" placeholder="Your message" required />
+    <button type="submit">Send Message</button>
+  </form>
+
+  <p id="response"></p>
+
   <script>
-    fetch("https://ggwsihjsfp.us-east-1.awsapprunner.com/ping")
+    const backendUrl = "https:/ggwsihjsfp.us-east-1.awsapprunner.com/"; 
+    // Check backend health
+    fetch(`${backendUrl}/ping`)
       .then(res => res.json())
       .then(data => {
         document.getElementById("status").innerText = data.message;
       })
-      .catch((err) => {
-        console.error("Fetch failed:", err);
+      .catch(() => {
         document.getElementById("status").innerText = "Failed to reach backend.";
       });
+
+    // Handle form submit
+    document.getElementById("messageForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const message = document.getElementById("message").value;
+
+      fetch(`${backendUrl}/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("response").innerText = `✅ ${data.status}: ${data.message}`;
+        document.getElementById("messageForm").reset();
+      })
+      .catch(() => {
+        document.getElementById("response").innerText = "❌ Failed to send message.";
+      });
+    });
   </script>
 </body>
 </html>
